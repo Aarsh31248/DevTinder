@@ -5,6 +5,7 @@ const app = express();
 
 app.use(express.json());
 
+// TO put the user data in the database
 app.post("/signup", async (req, res) => {
   const user = new User(req.body);
 
@@ -16,7 +17,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-// To find single user
+// To find single user with emailId
 app.get("/user", async (req, res) => {
   const userEmail = req.body.emailId;
 
@@ -41,6 +42,29 @@ app.get("/feed", async (req, res) => {
     } else {
       res.send(users);
     }
+  } catch (err) {
+    res.status(400).send("Something went wrong", err.message);
+  }
+});
+
+// Delete the user by ID
+app.delete("/user", async (req, res) => {
+  const userId = req.body.userId;
+  try {
+    const user = await User.findByIdAndDelete(userId);
+    res.send("User deleted successfully");
+  } catch (err) {
+    res.status(400).send("Something went wrong", err.message);
+  }
+});
+
+// To update the user data with ID
+app.patch("/user", async (req, res) => {
+  const userId = req.body.userId;
+  const data = req.body;
+  try {
+    const user = await User.findByIdAndUpdate(userId, data);
+    res.send("Updated user successfully");
   } catch (err) {
     res.status(400).send("Something went wrong", err.message);
   }
