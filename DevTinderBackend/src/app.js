@@ -7,10 +7,40 @@ app.use(express.json());
 
 app.post("/signup", async (req, res) => {
   const user = new User(req.body);
-  
+
   try {
     await user.save();
     res.send("User added successfully");
+  } catch (err) {
+    res.status(400).send("Something went wrong", err.message);
+  }
+});
+
+// To find single user
+app.get("/user", async (req, res) => {
+  const userEmail = req.body.emailId;
+
+  try {
+    const users = await User.find({ emailId: userEmail });
+    if (!users) {
+      res.status(404).send("User not found!");
+    } else {
+      res.send(users);
+    }
+  } catch (err) {
+    res.status(400).send("Something went wrong", err.message);
+  }
+});
+
+// To find all users
+app.get("/feed", async (req, res) => {
+  try {
+    const users = await User.find({});
+    if (!users) {
+      res.status(404).send("Users not found!");
+    } else {
+      res.send(users);
+    }
   } catch (err) {
     res.status(400).send("Something went wrong", err.message);
   }
