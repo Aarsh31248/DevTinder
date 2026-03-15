@@ -31,6 +31,27 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+// Checking user email and password for login
+app.post("/login", async (req, res) => {
+  try {
+    const { emailId, password } = req.body;
+
+    const user = await User.findOne({ emailId: emailId });
+    if (!user) {
+      throw new Error("Invalid Credentials");
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (isPasswordValid) {
+      res.send("Login Successfull");
+    } else {
+      throw new Error("Invalid Credentials");
+    }
+  } catch (err) {
+    res.status(400).send("ERROR : " + err.message);
+  }
+});
+
 // To find single user with emailId
 app.get("/user", async (req, res) => {
   const userEmail = req.body.emailId;
