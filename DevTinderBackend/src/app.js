@@ -5,6 +5,8 @@ const connectDB = require("./config/database");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const User = require("./models/user");
+const { userAuth } = require("./middlewares/auth");
+
 const app = express();
 
 app.use(express.json());
@@ -47,7 +49,9 @@ app.post("/login", async (req, res) => {
 
     if (isPasswordValid) {
       // Create a JWT token
-      const token = await jwt.sign({ _id: user._id }, "DEV@TINDER$333");
+      const token = await jwt.sign({ _id: user._id }, "DEV@TINDER$333", {
+        expiresIn: "7d",
+      });
 
       // Send the token back to the user
       res.cookie("token", token);
@@ -60,26 +64,18 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/profile", async (req, res) => {
+app.get("/profile", userAuth, async (req, res) => {
   try {
-    const cookies = req.cookies;
-    const { token } = cookies;
-    if (!token) {
-      throw new Error("Invalid Token");
-    }
-
-    // Verify the token
-    const decodeMessage = await jwt.verify(token, "DEV@TINDER$333");
-    const { _id } = decodeMessage;
-
-    const user = await User.find({ _id });
-    if (!user) {
-      throw new Error("User does not exist!");
-    }
+    const user = req.user;
     res.send(user);
   } catch (err) {
     res.status(400).send("ERROR : " + err.message);
   }
+});
+
+app.post("/sendConnectionRequest", userAuth, async (req, res) => {
+  const user = req.user;
+  res.send(user.firstName + " Sent a connection request");
 });
 
 // To find single user with emailId
