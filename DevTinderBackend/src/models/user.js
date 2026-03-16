@@ -54,6 +54,7 @@ const userSchema = new mongoose.Schema(
     },
     about: {
       type: String,
+      maxLength: 50,
     },
   },
   {
