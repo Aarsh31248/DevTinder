@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { addUser } from "../utils/userSlice";
 import { BASE_URL } from "../utils/constant";
 
@@ -9,6 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState("Vicky@123");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLoginClick = async () => {
     try {
@@ -23,6 +25,7 @@ const Login = () => {
         },
       );
       dispatch(addUser(res.data));
+      navigate("/");
     } catch (err) {
       console.log("ERROR:", err.response?.data);
     }
