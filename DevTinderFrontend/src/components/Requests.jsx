@@ -17,9 +17,8 @@ const Requests = () => {
       );
       dispatch(removeRequest(_id));
     } catch (error) {
-      console.log(err);
       const errorMsg = err?.response?.data || "Something went wrong!";
-      setError(errorMsg);
+      console.log(errorMsg);
     }
   };
 
@@ -30,9 +29,8 @@ const Requests = () => {
     dispatch(addRequest(res.data.data));
     try {
     } catch (error) {
-      console.log(err);
       const errorMsg = err?.response?.data || "Something went wrong!";
-      setError(errorMsg);
+      console.log(errorMsg);
     }
   };
 

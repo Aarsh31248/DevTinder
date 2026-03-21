@@ -15,9 +15,8 @@ const Connections = () => {
     dispatch(addConnections(res.data.data));
     try {
     } catch (error) {
-      console.log(err);
       const errorMsg = err?.response?.data || "Something went wrong!";
-      setError(errorMsg);
+      console.log(errorMsg);
     }
   };
 
