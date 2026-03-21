@@ -50,7 +50,6 @@ const userSchema = new mongoose.Schema(
     },
     photoUrl: {
       type: String,
-      default: "Some random Image URL",
     },
     about: {
       type: String,
