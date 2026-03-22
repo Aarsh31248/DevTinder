@@ -73,13 +73,13 @@ const Requests = () => {
 
             <div>
               <button
-                className="btn btn-error mx-2"
+                className="btn btn-error mx-2 my-2"
                 onClick={() => reviewRequest("rejected", request._id)}
               >
                 Reject
               </button>
               <button
-                className="btn btn-info mx-2"
+                className="btn btn-info mx-2 my-2"
                 onClick={() => reviewRequest("accepted", request._id)}
               >
                 Accept
